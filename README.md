@@ -29,6 +29,6 @@ Group `HEAD with size 198`
 ```
 
 
-# Project Goals
+# Цель проекта
 
-The code is written for educational purposes. Training course for web-developers - [DEVMAN.org](https://devman.org)
+Код написан с обучающими целями. Учебный курс для веб-разработчиков - [DEVMAN.org](https://devman.org)
