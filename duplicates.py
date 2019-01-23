@@ -46,11 +46,11 @@ deep_files_iterate(sys.argv[1], duplicate_handler.add_file)
 
 duplicates = list(duplicate_handler.get_dublicates())
 
-if len(duplicates) == 0:
-    print("No dublicates detected")
-else:
-    print("Next dublicates detected:")
+if not duplicates:
+    sys.exit("No dublicates detected")
 
-    for group_name, duplicates_group in duplicates:
-        print("Group `{}`".format(group_name))
-        print("\n".join(duplicates_group))
+print("Next dublicates detected:")
+
+for group_name, duplicates_group in duplicates:
+    print("Group `{}`".format(group_name))
+    print("\n".join(duplicates_group))
