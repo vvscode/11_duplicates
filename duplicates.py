@@ -18,7 +18,7 @@ class DuplicatesStatHandler:
     def get_ident_key(self, path):
         file_name = os.path.basename(path)
         file_size = os.stat(path).st_size
-        return (file_name, file_size)
+        return file_name, file_size
 
     def add_file(self, path):
         key = self.get_ident_key(path)
