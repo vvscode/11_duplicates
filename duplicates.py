@@ -11,22 +11,19 @@ def process_files(start_path, processor=lambda _: None):
             processor(full_path)
 
 
-class DuplicatesStatHandler:
-    def __init__(self):
-        self.storage = defaultdict(list)
+def get_ident_key(path):
+    file_name = os.path.basename(path)
+    file_size = os.stat(path).st_size
+    return file_name, file_size
 
-    def get_ident_key(self, path):
-        file_name = os.path.basename(path)
-        file_size = os.stat(path).st_size
-        return file_name, file_size
 
-    def add_file(self, path):
-        key = self.get_ident_key(path)
-        self.storage[key].append(path)
+def add_file_to_storage(storage, path):
+    storage[get_ident_key(path)].append(path)
 
-    def get_dublicates(self):
-        keys_with_dublicates = filter(lambda x: len(self.storage[x]) > 1, self.storage.keys())
-        return map(lambda x: (x, self.storage[x]), keys_with_dublicates)
+
+def get_dublicates(storage):
+    keys_with_dublicates = filter(lambda x: len(storage[x]) > 1, storage.keys())
+    return map(lambda x: (x, storage[x]), keys_with_dublicates)
 
 
 if __name__ == "__main__":
@@ -38,14 +35,15 @@ if __name__ == "__main__":
     if not os.path.isdir(dirname):
         sys.exit("Please pass correct directory name")
 
-    duplicate_handler = DuplicatesStatHandler()
+    storage = defaultdict(list)
 
-    process_files(sys.argv[1], duplicate_handler.add_file)
+    process_files(sys.argv[1], lambda path: add_file_to_storage(storage, path))
 
-    duplicates = list(duplicate_handler.get_dublicates())
+    duplicates = list(get_dublicates(storage))
 
     if not duplicates:
-        sys.exit("No dublicates detected")
+        print("No dublicates detected")
+        sys.exit()
 
     print("Next dublicates detected:")
 
